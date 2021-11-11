@@ -71,7 +71,7 @@ def get_asgi_application():
 # Fetch Django ASGI application early to ensure AppRegistry is populated
 # before importing consumers and AuthMiddlewareStack that may import ORM
 # models.
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.common")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.production")
 django_asgi_app = get_asgi_application()
 
 
