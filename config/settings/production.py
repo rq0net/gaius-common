@@ -10,16 +10,23 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*.asians.cloud"])
 
 # DATABASES
 # ------------------------------------------------------------------------------
-DATABASES["default"] = env.db("DATABASE_URL")  # noqa F405
-DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
+#DATABASES["default"] = env.db("DATABASE_URL")  # noqa F405
+#DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
+
 DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
 
 # CACHES
 # ------------------------------------------------------------------------------
+REDIS_HOST = os.getenv('REDIS_HOST', 'redis-master')
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', 'hZg7kXzvPN')
+REDIS_PORT = os.getenv('REDIS_PORT', '6379')
+REDIS_DATABASE_CACHE = os.getenv('REDIS_DATABASE_CACHE', '2')
+REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DATABASE_CACHE}'
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": env("REDIS_URL"),
+        "LOCATION": REDIS_URL,
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             # Mimicing memcache behavior.
