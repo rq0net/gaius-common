@@ -64,13 +64,13 @@ SECURE_CONTENT_TYPE_NOSNIFF = env.bool(
 # STORAGES
 # ------------------------------------------------------------------------------
 # https://django-storages.readthedocs.io/en/latest/#installation
+#if env.bool("USE_STORAGES", False):
 INSTALLED_APPS += ["storages"]  # noqa F405
 AZURE_ACCOUNT_NAME = env.str("DJANGO_AZURE_ACCOUNT_NAME")
 AZURE_ACCOUNT_KEY = env.str("DJANGO_AZURE_ACCOUNT_KEY")
 AZURE_CUSTOM_DOMAIN = env.str("DJANGO_AZURE_CUSTOM_DOMAIN", f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net')
 
-DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
-STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+print("AZURE_CUSTOM_DOMAIN=", AZURE_CUSTOM_DOMAIN)
 
 STATIC_LOCATION = "static"
 MEDIA_LOCATION = "media"
@@ -83,7 +83,7 @@ STATICFILES_STORAGE = "gaius_common.utils.storages.AzureStaticStorage"
 # COLLECTFAST_STRATEGY = "collectfast.strategies.gcloud.GoogleCloudStrategy"
 
 #https://gaiusstorage.blob.core.windows.net/static/image_2021_11_11T02_59_05_877Z.png
-AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+# AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
 STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
 
 # MEDIA
