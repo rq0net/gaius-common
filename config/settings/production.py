@@ -10,17 +10,15 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*.asians.cloud"])
 
 # DATABASES
 # ------------------------------------------------------------------------------
-#DATABASES["default"] = env.db("DATABASE_URL")  # noqa F405
-#DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
-
+DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
 DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
 
 # CACHES
 # ------------------------------------------------------------------------------
-REDIS_HOST = os.getenv('REDIS_HOST', 'redis-master')
-REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', 'hZg7kXzvPN')
-REDIS_PORT = os.getenv('REDIS_PORT', '6379')
-REDIS_DATABASE_CACHE = os.getenv('REDIS_DATABASE_CACHE', '2')
+REDIS_HOST = env.str('REDIS_HOST', 'redis-master')
+REDIS_PASSWORD = env.str('REDIS_PASSWORD', 'hZg7kXzvPN')
+REDIS_PORT = env.int('REDIS_PORT', 6379)
+REDIS_DATABASE_CACHE = os.int('REDIS_DATABASE_CACHE', 2)
 REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DATABASE_CACHE}'
 
 CACHES = {
@@ -64,32 +62,29 @@ SECURE_CONTENT_TYPE_NOSNIFF = env.bool(
 # STORAGES
 # ------------------------------------------------------------------------------
 # https://django-storages.readthedocs.io/en/latest/#installation
-#if env.bool("USE_STORAGES", False):
-INSTALLED_APPS += ["storages"]  # noqa F405
-AZURE_ACCOUNT_NAME = env.str("DJANGO_AZURE_ACCOUNT_NAME")
-AZURE_ACCOUNT_KEY = env.str("DJANGO_AZURE_ACCOUNT_KEY")
-AZURE_CUSTOM_DOMAIN = env.str("DJANGO_AZURE_CUSTOM_DOMAIN", f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net')
-#AZURE_FRONT_DOMAIN = env.str("DJANGO_AZURE_FRONT_DOMAIN", f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net')
+if env.bool("USE_STORAGES", False):
+    INSTALLED_APPS += ["storages"]  # noqa F405
+    AZURE_ACCOUNT_NAME = env.str("DJANGO_AZURE_ACCOUNT_NAME")
+    AZURE_ACCOUNT_KEY = env.str("DJANGO_AZURE_ACCOUNT_KEY")
+    AZURE_CUSTOM_DOMAIN = env.str("DJANGO_AZURE_CUSTOM_DOMAIN", f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net')
+    #AZURE_FRONT_DOMAIN = env.str("DJANGO_AZURE_FRONT_DOMAIN", f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net')
 
-STATIC_LOCATION = "static"
-MEDIA_LOCATION = "media"
+    AZURE_OVERWRITE_FILES = True
 
-AZURE_OVERWRITE_FILES = True
+    # STATIC
+    # ------------------------
+    STATICFILES_STORAGE = "gaius_common.utils.storages.AzureStaticStorage"
+    # COLLECTFAST_STRATEGY = "collectfast.strategies.gcloud.GoogleCloudStrategy"
 
-# STATIC
-# ------------------------
-STATICFILES_STORAGE = "gaius_common.utils.storages.AzureStaticStorage"
-# COLLECTFAST_STRATEGY = "collectfast.strategies.gcloud.GoogleCloudStrategy"
+    #https://gaiusstorage.blob.core.windows.net/static/image_2021_11_11T02_59_05_877Z.png
+    # AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+    STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/static/'
 
-#https://gaiusstorage.blob.core.windows.net/static/image_2021_11_11T02_59_05_877Z.png
-# AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
-STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
-
-# MEDIA
-# ------------------------------------------------------------------------------
-DEFAULT_FILE_STORAGE = "gaius_common.utils.storages.AzureMediaStorage"
-MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
-
+    # MEDIA
+    # ------------------------------------------------------------------------------
+    DEFAULT_FILE_STORAGE = "gaius_common.utils.storages.AzureMediaStorage"
+    MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/media/'
+    
 # TEMPLATES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#templates
