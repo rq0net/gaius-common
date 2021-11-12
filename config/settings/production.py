@@ -83,7 +83,7 @@ STATICFILES_STORAGE = "gaius_common.utils.storages.AzureStaticStorage"
 
 #https://gaiusstorage.blob.core.windows.net/static/image_2021_11_11T02_59_05_877Z.png
 # AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
-STATIC_URL = f'https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/{STATIC_LOCATION}/'
+STATIC_URL = f'https://{AZURE_FRONT_DOMAIN}/{STATIC_LOCATION}/'
 
 # MEDIA
 # ------------------------------------------------------------------------------
@@ -120,7 +120,7 @@ EMAIL_SUBJECT_PREFIX = env(
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL regex.
-ADMIN_URL = env.str("DJANGO_ADMIN_URL", r'^admin/')
+ADMIN_URL = env.str("DJANGO_ADMIN_URL", "admin/")
 
 # Anymail
 # ------------------------------------------------------------------------------
