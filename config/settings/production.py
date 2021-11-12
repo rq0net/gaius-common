@@ -62,7 +62,7 @@ SECURE_CONTENT_TYPE_NOSNIFF = env.bool(
 # STORAGES
 # ------------------------------------------------------------------------------
 # https://django-storages.readthedocs.io/en/latest/#installation
-if env.bool("USE_STORAGES", False):
+if env.bool("DJANGO_USE_STORAGE", False):
     INSTALLED_APPS += ["storages"]  # noqa F405
     AZURE_ACCOUNT_NAME = env.str("DJANGO_AZURE_ACCOUNT_NAME")
     AZURE_ACCOUNT_KEY = env.str("DJANGO_AZURE_ACCOUNT_KEY")
