@@ -65,17 +65,31 @@ SECURE_CONTENT_TYPE_NOSNIFF = env.bool(
 # ------------------------------------------------------------------------------
 # https://django-storages.readthedocs.io/en/latest/#installation
 INSTALLED_APPS += ["storages"]  # noqa F405
-GS_BUCKET_NAME = env("DJANGO_GCP_STORAGE_BUCKET_NAME")
-GS_DEFAULT_ACL = "publicRead"
+AZURE_ACCOUNT_NAME = env("DJANGO_AZURE_ACCOUNT_KEY")
+AZURE_ACCOUNT_KEY=env("DJANGO_AZURE_ACCOUNT_NAME")
+AZURE_CUSTOM_DOMAIN=env("DJANGO_AZURE_CUSTOM_DOMAIN", f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net')
+
+DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+
+STATIC_LOCATION = "static"
+MEDIA_LOCATION = "media"
+
+AZURE_OVERWRITE_FILES = True
+
 # STATIC
 # ------------------------
-STATICFILES_STORAGE = "gaius_common.utils.storages.StaticRootGoogleCloudStorage"
-COLLECTFAST_STRATEGY = "collectfast.strategies.gcloud.GoogleCloudStrategy"
-STATIC_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/static/"
+STATICFILES_STORAGE = "gaius_common.utils.storages.AzureStaticStorage"
+# COLLECTFAST_STRATEGY = "collectfast.strategies.gcloud.GoogleCloudStrategy"
+
+#https://gaiusstorage.blob.core.windows.net/static/image_2021_11_11T02_59_05_877Z.png
+AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+
 # MEDIA
 # ------------------------------------------------------------------------------
-DEFAULT_FILE_STORAGE = "gaius_common.utils.storages.MediaRootGoogleCloudStorage"
-MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/media/"
+DEFAULT_FILE_STORAGE = "gaius_common.utils.storages.AzureMediaStorage"
+MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
 
 # TEMPLATES
 # ------------------------------------------------------------------------------
@@ -122,7 +136,7 @@ ANYMAIL = {}
 # Collectfast
 # ------------------------------------------------------------------------------
 # https://github.com/antonagestam/collectfast#installation
-INSTALLED_APPS = ["collectfast"] + INSTALLED_APPS  # noqa F405
+#INSTALLED_APPS = ["collectfast"] + INSTALLED_APPS  # noqa F405
 
 # LOGGING
 # ------------------------------------------------------------------------------
