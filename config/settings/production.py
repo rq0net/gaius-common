@@ -68,9 +68,8 @@ SECURE_CONTENT_TYPE_NOSNIFF = env.bool(
 INSTALLED_APPS += ["storages"]  # noqa F405
 AZURE_ACCOUNT_NAME = env.str("DJANGO_AZURE_ACCOUNT_NAME")
 AZURE_ACCOUNT_KEY = env.str("DJANGO_AZURE_ACCOUNT_KEY")
-AZURE_CUSTOM_DOMAIN = env.str("DJANGO_AZURE_CUSTOM_DOMAIN", f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net')
-
-print("AZURE_CUSTOM_DOMAIN=", AZURE_CUSTOM_DOMAIN)
+AZURE_CUSTOM_DOMAIN = env.str("DJANGO_AZURE_CUSTOM_DOMAIN", 'blob.core.windows.net')
+AZURE_FRONT_DOMAIN = env.str("DJANGO_AZURE_CUSTOM_DOMAIN", f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net')
 
 STATIC_LOCATION = "static"
 MEDIA_LOCATION = "media"
@@ -84,12 +83,12 @@ STATICFILES_STORAGE = "gaius_common.utils.storages.AzureStaticStorage"
 
 #https://gaiusstorage.blob.core.windows.net/static/image_2021_11_11T02_59_05_877Z.png
 # AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
-STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+STATIC_URL = f'https://{AZURE_FRONT_DOMAIN}/{STATIC_LOCATION}/'
 
 # MEDIA
 # ------------------------------------------------------------------------------
 DEFAULT_FILE_STORAGE = "gaius_common.utils.storages.AzureMediaStorage"
-MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
+MEDIA_URL = f'https://{AZURE_FRONT_DOMAIN}/{MEDIA_LOCATION}/'
 
 # TEMPLATES
 # ------------------------------------------------------------------------------
