@@ -65,8 +65,8 @@ SECURE_CONTENT_TYPE_NOSNIFF = env.bool(
 # ------------------------------------------------------------------------------
 # https://django-storages.readthedocs.io/en/latest/#installation
 INSTALLED_APPS += ["storages"]  # noqa F405
-AZURE_ACCOUNT_NAME = env.str("DJANGO_AZURE_ACCOUNT_KEY")
-AZURE_ACCOUNT_KEY = env.str("DJANGO_AZURE_ACCOUNT_NAME")
+AZURE_ACCOUNT_NAME = env.str("DJANGO_AZURE_ACCOUNT_NAME")
+AZURE_ACCOUNT_KEY = env.str("DJANGO_AZURE_ACCOUNT_KEY")
 AZURE_CUSTOM_DOMAIN = env.str("DJANGO_AZURE_CUSTOM_DOMAIN", f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net')
 
 DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
